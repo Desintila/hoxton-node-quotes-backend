@@ -59,4 +59,9 @@ app.get('/quotes', (req, res) => {
     res.send(quotes)
 })
 
+app.get('/randomquote', (req, res) => {
+    const randomIndex = (Math.floor(Math.random() * quotes.length))
+    const quote = quotes[randomIndex]
+    res.send(quote)
+})
 app.listen(3001)
