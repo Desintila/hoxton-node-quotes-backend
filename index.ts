@@ -15,7 +15,7 @@ type Quote = {
     id: number
 }
 
-const quotes: Quote[] = [
+let quotes: Quote[] = [
     {
         text: 'The greatest glory in living lies not in never falling, but in rising every time we fall.',
         firstName: 'Nelson',
@@ -156,5 +156,56 @@ app.post('/quotes', (req, res) => {
     }
 })
 
+
+app.delete('/quotes/:id', (req, res) => {
+    const id = Number(req.params.id)
+
+    const match = quotes.find(quote => quote.id === id)
+
+    if (match) {
+        quotes = quotes.filter(quote => quote.id !== id)
+        res.send('Quote deleted')
+    }
+    else {
+        res.status(404).send({ error: 'Quote not found' })
+    }
+})
+
+
+app.patch('/quotes/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const changeQuote = quotes.find(quote => quote.id === id)
+
+    if (changeQuote) {
+
+        if (typeof req.body.text === 'string') {
+            changeQuote.text = req.body.text
+        }
+
+        if (typeof req.body.firstName === 'string') {
+            changeQuote.firstName = req.body.firstName
+        }
+
+        if (typeof req.body.lastName === 'string') {
+            changeQuote.lastName = req.body.lastName
+        }
+
+        if (typeof req.body.image === 'string') {
+            changeQuote.image = req.body.image
+        }
+
+        if (typeof req.body.age === 'number') {
+            changeQuote.age = req.body.age
+        }
+
+        res.send(changeQuote)
+    }
+
+
+    else {
+        res.status(404).send({ error: 'Quote not found' })
+    }
+
+})
 
 app.listen(3001)
